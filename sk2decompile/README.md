@@ -136,6 +136,34 @@ python normalize_pseudo.py --input_json reverse_sample.json --output_json revers
 python sk2decompile.py --dataset_path reverse_sample.json --model_path LLM4Binary/sk2decompile-struct-6.7b --recover_model_path LLM4Binary/sk2decompile-ident-6.7
 ```
 
+**Detailed version**
+0. Install `vllm` and `transformers` via `pip`; install `clang-format` via `apt`.
+1. Prepare a Linux-x64 executable file (ELF).
+2. Use IDA to decompile it (you can also simply use this website: [https://dogbolt.org/](https://dogbolt.org/)).
+3. Convert the data into the corresponding format
+   ([https://huggingface.co/LLM4Binary/sk2decompile-struct-6.7b/blob/main/reverse_sample.json](https://huggingface.co/LLM4Binary/sk2decompile-struct-6.7b/blob/main/reverse_sample.json))
+4. Run inference:
+
+   ```bash
+   python normalize_pseudo.py --input_json reverse_sample.json --output_json reverse_sample.json
+   python sk2decompile.py --dataset_path reverse_sample.json \
+       --model_path LLM4Binary/sk2decompile-struct-6.7b \
+       --recover_model_path LLM4Binary/sk2decompile-ident-6.7
+   ```
+
+**Model page:**
+[https://huggingface.co/LLM4Binary/sk2decompile-struct-6.7b](https://huggingface.co/LLM4Binary/sk2decompile-struct-6.7b)
+
+**Project overview:**
+[https://github.com/albertan017/LLM4Decompile/tree/main/sk2decompile](https://github.com/albertan017/LLM4Decompile/tree/main/sk2decompile)
+
+**Notes:**
+
+* IDA decompilation results should be preprocessed before inference.
+* Use `vllm` to recover function structure (`sk2decompile-struct`) and variable names (`sk2decompile-ident`) step by step.
+* Training was done on C language Linux-x64 code with IDA pseudocode; performance may degrade for other languages or architectures.
+
+
 Comprehensive evaluation on standard benchmarks:
 
 ```bash
